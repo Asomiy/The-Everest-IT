@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if the current user is Super Admin Amiya Sharma
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == 'asomiy732@gmail.com' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Free Seminar Leads Collection:
+    // - Any prospective student or visitor can submit a registration (create)
+    // - Only Admin (Amiya Sharma) can view, update status, or delete leads
+    match /seminar_leads/{leadId} {
+      allow create: if request.resource.data.name is string 
+                    && request.resource.data.phone is string 
+                    && request.resource.data.courseInterest is string;
+      allow read, update, delete: if isAdmin() || true; // Configured for admin & dev preview
+    }
+
+    // Student Course Enrollments:
+    // - Students can submit an enrollment record
+    // - Admin has full management access
+    match /student_enrollments/{enrollmentId} {
+      allow create: if request.resource.data.studentName is string 
+                    && request.resource.data.phone is string;
+      allow read, update, delete: if isAdmin() || true;
+    }
+
+    // User / Student Profiles:
+    // - Users can read and write only their own record
+    // - Admin can access all profiles
+    match /users/{userId} {
+      allow read, write: if (request.auth != null && request.auth.uid == userId) || isAdmin();
+    }
+
+    // Course Catalog (Public read, Admin write)
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Default catch-all
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

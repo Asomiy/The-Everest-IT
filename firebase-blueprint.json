@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "SeminarLead": {
+      "title": "SeminarLead",
+      "description": "Attendee registration for free career counseling seminars at The Everest IT",
+      "type": "object",
+      "properties": {
+        "ticketId": {
+          "type": "string",
+          "description": "Unique entrance ticket reference code"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the student"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Active mobile phone number"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address"
+        },
+        "courseInterest": {
+          "type": "string",
+          "description": "Selected course of interest"
+        },
+        "preferredShift": {
+          "type": "string",
+          "description": "Attendance mode: In-Person or Online"
+        },
+        "status": {
+          "type": "string",
+          "description": "Lead status: New Lead, Contacted, Verified, or Converted"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Counselor notes"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["ticketId", "name", "phone", "courseInterest"]
+    },
+    "StudentEnrollment": {
+      "title": "StudentEnrollment",
+      "description": "Course admission and enrollment record",
+      "type": "object",
+      "properties": {
+        "enrollmentId": {
+          "type": "string",
+          "description": "Unique admission enrollment ID"
+        },
+        "studentName": {
+          "type": "string",
+          "description": "Student full name"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number"
+        },
+        "course": {
+          "type": "string",
+          "description": "Enrolled course title"
+        },
+        "batch": {
+          "type": "string",
+          "description": "Selected batch slot"
+        },
+        "fee": {
+          "type": "number",
+          "description": "Total tuition fee"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "bKash, Nagad, Bank, or Campus Cash"
+        },
+        "status": {
+          "type": "string",
+          "description": "Payment status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Enrollment date"
+        }
+      },
+      "required": ["enrollmentId", "studentName", "phone", "course", "fee"]
+    }
+  },
+  "firestore": {
+    "/seminar_leads/{leadId}": {
+      "schema": "SeminarLead",
+      "description": "Collection of seminar registrations and lead submissions"
+    },
+    "/student_enrollments/{enrollmentId}": {
+      "schema": "StudentEnrollment",
+      "description": "Collection of course admissions and fee payments"
+    }
+  }
+}
